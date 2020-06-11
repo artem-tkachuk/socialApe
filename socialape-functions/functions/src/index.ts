@@ -1,65 +1,43 @@
-// require('dotenv').config(); //load environmental variables
+require('dotenv').config(); //load environmental variables
 
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');    
-const express = require('express');
+import * as functions from 'firebase-functions';
+import * as admin from 'firebase-admin';
+import * as express from 'express';
+import * as firebase from 'firebase';
+import routes from './routes/routes';
 
 const app = express();
 
+const ENV = process.env.ENV;
 
-// const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-// const projectId = process.env.PROJECT_ID;
+if (ENV === 'development') {
+    const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS!;
+    const projectId = process.env.PROJECT_ID!;
 
-//const serviceAccount = require(serviceAccountPath);
+    const serviceAccount = require(serviceAccountPath);
 
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: `https://${projectId}.firebaseio.com`
-// });
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+      databaseURL: `https://${projectId}.firebaseio.com`
+    });
+} else {
+    admin.initializeApp();
+}
 
-admin.initializeApp();
+let firebaseConfig = {
+    apiKey: "AIzaSyDrfv1DGQDpINNUHB7umaeRzO_JOLBuWmM",
+    authDomain: "socialape-ea8b3.firebaseapp.com",
+    databaseURL: "https://socialape-ea8b3.firebaseio.com",
+    projectId: "socialape-ea8b3",
+    storageBucket: "socialape-ea8b3.appspot.com",
+    messagingSenderId: "416877167813",
+    appId: "1:416877167813:web:e158ded363ba469d509cac",
+    measurementId: "G-54PW0D0Y3N"
+};
+firebase.initializeApp(firebaseConfig);
 
-app.get('/screams', (req, res) => {
-    admin.firestore().collection('screams')
-        .orderBy('createdAt', 'desc')
-        .get()
-        .then(data => {
-            let screams = [];
-            
-            data.forEach(doc => {
-                screams.push({
-                    screamId: doc.id,
-                    body: doc.data().body,
-                    userHandle: doc.data().userHandle,
-                    createdAt: doc.data().createdAt
-                });
-            })
-
-            return res.json(screams);
-        })
-        .catch(err => console.error(err));
-});
-
-app.post('/create-scream', (req, res) => {
-    admin.firestore().collection('screams')
-        .add({
-            body: req.body.body,
-            userHandle: req.body.userHandle,
-            createdAt: new Date().toISOString()
-        })
-        .then(doc => {
-            res.json({
-                message: `Document ${doc.id} is created successfully!`
-            })
-        })
-        .catch(err => {
-            res.status(500).json({
-                error: `Something went wrong!`
-            })
-            console.error(err); 
-        })
-})
-
-// https://baseurl.com/api/...
+app.use(routes);
 
 exports.api = functions.https.onRequest(app);
+
+// good practice: https://baseurl.com/api/...
