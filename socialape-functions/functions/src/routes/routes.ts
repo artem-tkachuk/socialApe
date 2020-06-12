@@ -1,5 +1,9 @@
 import * as express from 'express';
-import {createScream, getScreams, login, signUp} from "../controllers/screams";
+
+import {getScreams} from "../controllers/getScreams";
+import {createScream} from "../controllers/createScream";
+import {signUp} from "../controllers/signup";
+import {login} from "../controllers/login";
 
 const router = express.Router();
 
