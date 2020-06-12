@@ -4,7 +4,7 @@ import db from "../database/firestore";
 
 import firebase from "../config/firebase";
 
-import {validateNewUserData} from "../util/util";
+import {validateNewUserData} from "../util/validators";
 
 // @ts-ignore
 export const signUp = (req: Request, res: Response) => {
@@ -17,9 +17,9 @@ export const signUp = (req: Request, res: Response) => {
     };
 
     //Data validation
-    const errors = validateNewUserData(newUser);
+    const { errors, valid }  = validateNewUserData(newUser);
 
-    if (Object.keys(errors).length > 0) {
+    if (!valid) {
         return res.status(400).json(errors);
     } else {
         let userToken = ``, userId = ``;

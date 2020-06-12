@@ -25,7 +25,10 @@ export const validateNewUserData = (newUser: User) => {
         errors.handle = `Must not be empty`;
     }
 
-    return errors;
+    return {
+        errors,
+        valid: Object.keys(errors).length === 0
+    };
 };
 
 export const validateLoginData = (loginUserData: { email: string, password: string}) => {
@@ -39,7 +42,10 @@ export const validateLoginData = (loginUserData: { email: string, password: stri
         errors.password = `Must not be empty`;
     }
 
-    return errors;
+    return {
+        errors,
+        valid: Object.keys(errors).length === 0
+    }
 };
 
 

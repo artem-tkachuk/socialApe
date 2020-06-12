@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 
 import firebase from "../config/firebase";
 
-import {validateLoginData} from "../util/util";
+import {validateLoginData} from "../util/validators";
 
 
 // @ts-ignore
@@ -12,9 +12,9 @@ export const login = (req: Request, res: Response) => {
         password: req.body.password
     };
 
-    const errors = validateLoginData(loginUser);
+    const { errors, valid } = validateLoginData(loginUser);
 
-    if (Object.keys(errors).length > 0) {
+    if (!valid) {
         return res.status(400).json(errors);
     } else {
         firebase.auth().signInWithEmailAndPassword(loginUser.email, loginUser.password)
