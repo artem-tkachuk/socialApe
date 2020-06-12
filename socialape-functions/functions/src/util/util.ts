@@ -40,7 +40,6 @@ export const validateLoginData = (loginUserData: { email: string, password: stri
     }
 
     return errors;
-
 };
 
 

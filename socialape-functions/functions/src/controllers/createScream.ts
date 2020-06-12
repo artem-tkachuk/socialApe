@@ -1,11 +1,20 @@
 import {Request, Response} from "express";
-import admin from "../config/admin";
+import db from "../database/firestore";
 
+// @ts-ignore
 export const createScream = (req: Request, res: Response) => {
-    admin.firestore().collection('screams')
+
+    if (req.body.body.trim() === ``) {
+        return res.status(400).json({
+            body: `Body must not be empty`
+        });
+    }
+
+    db.collection('screams')
         .add({
             body: req.body.body,
-            userHandle: req.body.userHandle,
+            // @ts-ignore
+            userHandle: req.user.handle,
             createdAt: new Date().toISOString()
         })
         .then(doc => {

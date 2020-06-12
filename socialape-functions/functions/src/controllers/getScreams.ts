@@ -6,7 +6,6 @@ import {Scream} from "../interfaces/scream";
 
 
 export const getScreams = (req: Request, res: Response) => {
-    console.log('Here');
     db.collection('screams')
         .orderBy('createdAt', 'desc')
         .get()

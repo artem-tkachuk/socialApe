@@ -25,7 +25,7 @@ export const login = (req: Request, res: Response) => {
                 return res.json({ token });
             })
             .catch(err => {
-                console.log(err);
+                console.error(err);
 
                 if (err.code === `auth/wrong-password`) {
                     return res.status(403).json({

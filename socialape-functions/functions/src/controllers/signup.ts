@@ -5,8 +5,8 @@ import db from "../database/firestore";
 import firebase from "../config/firebase";
 
 import {validateNewUserData} from "../util/util";
-// @ts-ignore
 
+// @ts-ignore
 export const signUp = (req: Request, res: Response) => {
 
     const newUser = {
@@ -57,7 +57,7 @@ export const signUp = (req: Request, res: Response) => {
                 return res.status(201).json({ userToken })
             })
             .catch(err => {
-                console.log(err);
+                console.error(err);
                 if (err.code === `auth/email-already-in-use`) {
                     return res.status(400).json({
                         email: `Email is already in use`
