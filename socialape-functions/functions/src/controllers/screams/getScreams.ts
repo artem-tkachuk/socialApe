@@ -19,7 +19,7 @@ export const getScreams = (req: Request, res: Response) => {
                     userHandle: doc.data().userHandle,
                     createdAt: doc.data().createdAt,
                     commentCount: doc.data().commentCount,
-                    likeCount: doc.data().likeCount
+                    likeCount: doc.data().likeCount,
                 });
             });
 

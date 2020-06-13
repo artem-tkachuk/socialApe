@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
 import db from "../../database/firestore";
+import {Scream} from "../../interfaces/scream";
 
 // @ts-ignore
 export const createScream = (req: Request, res: Response) => {
@@ -10,17 +11,22 @@ export const createScream = (req: Request, res: Response) => {
         });
     }
 
+    const newScream: Scream = {
+        body: req.body.body,
+        // @ts-ignores
+        userHandle: req.user.handle,
+        commentCount: 0,
+        likeCount: 0,
+        createdAt: new Date().toISOString(),
+    };
+
     db.collection('screams')
-        .add({
-            body: req.body.body,
-            // @ts-ignore
-            userHandle: req.user.handle,
-            createdAt: new Date().toISOString()
-        })
+        .add(newScream)
         .then(doc => {
             res.json({
-                message: `Document ${doc.id} is created successfully!`
-            })
+                ...newScream,
+                screamId: doc.id
+            });
         })
         .catch(err => {
             res.status(500).json({

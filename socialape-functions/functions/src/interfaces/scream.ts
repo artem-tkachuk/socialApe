@@ -1,10 +1,10 @@
 import {Comment} from "./comment";
 
 export interface Scream {
-    screamId: string,
+    screamId?: string,
     body: string,
     userHandle: string,
-    createdAt: Date,
+    createdAt: string,
     likeCount: number
     commentCount: number,
     comments?: Array<Comment>
