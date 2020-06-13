@@ -7,5 +7,5 @@ export interface Scream {
     createdAt: Date,
     likeCount: number
     commentCount: number,
-    comments: Array<Comment>
+    comments?: Array<Comment>
 }
