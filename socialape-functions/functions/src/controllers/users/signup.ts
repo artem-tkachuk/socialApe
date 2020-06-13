@@ -1,10 +1,11 @@
 import {Request, Response} from "express";
 
-import db from "../database/firestore";
+import db from "../../database/firestore";
 
-import firebase from "../config/firebase";
+import firebase from "../../init/firebase";
 
-import {validateNewUserData} from "../util/validators";
+import {validateNewUserData} from "../../util/validators";
+import {firebaseConfig} from "../../config/firebase";
 
 // @ts-ignore
 export const signUp = (req: Request, res: Response) => {
@@ -22,6 +23,9 @@ export const signUp = (req: Request, res: Response) => {
     if (!valid) {
         return res.status(400).json(errors);
     } else {
+
+        const noImg = `no-img.png`;
+
         let userToken = ``, userId = ``;
 
         db.doc(`/users/${newUser.handle}`).get()
@@ -32,7 +36,9 @@ export const signUp = (req: Request, res: Response) => {
                         handle: `This handle is already taken!`
                     }) //bad request
                 } else {
-                    return firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password);
+                    return firebase
+                        .auth()
+                        .createUserWithEmailAndPassword(newUser.email, newUser.password);
                 }
             })
             .then(data => {
@@ -48,10 +54,13 @@ export const signUp = (req: Request, res: Response) => {
                     handle: newUser.handle,
                     email: newUser.email,
                     createdAt: new Date().toISOString(),
+                    imageUrl: `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/${noImg}?alt=media`,
                     userId
                 };
 
-                return db.doc(`/users/${newUser.handle}`).set(userCredentials);
+                return db
+                    .doc(`/users/${newUser.handle}`)
+                    .set(userCredentials);
             })
             .then(() => {
                 return res.status(201).json({ userToken })

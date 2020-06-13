@@ -48,6 +48,31 @@ export const validateLoginData = (loginUserData: { email: string, password: stri
     }
 };
 
+export const reduceUserDetails = (user: User) => {
+    let userDetails: {[key: string]: string} = {};
+
+    if (!isEmpty(user.bio!.trim())) {
+        userDetails.bio = user.bio!;
+    }
+
+    if (!isEmpty(user.website!.trim())) {
+        //https://website.com
+        if (user.website!.trim().substring(0, 4) !== 'http') {
+            userDetails.website = `http://${user.website!.trim()}`;
+        } else {
+            userDetails.website = user.website!;
+        }
+    }
+
+    if (!isEmpty(user.location!.trim())) {
+        userDetails.location = user.location!;
+    }
+
+    return userDetails;
+};
+
+
+//helper functions
 
 export const isEmpty = (email: string) => {
     return email.trim() === ``;

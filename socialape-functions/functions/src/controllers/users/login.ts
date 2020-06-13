@@ -1,8 +1,8 @@
 import {Request, Response} from "express";
 
-import firebase from "../config/firebase";
+import firebase from "../../init/firebase";
 
-import {validateLoginData} from "../util/validators";
+import {validateLoginData} from "../../util/validators";
 
 
 // @ts-ignore
@@ -17,7 +17,9 @@ export const login = (req: Request, res: Response) => {
     if (!valid) {
         return res.status(400).json(errors);
     } else {
-        firebase.auth().signInWithEmailAndPassword(loginUser.email, loginUser.password)
+        firebase
+            .auth()
+            .signInWithEmailAndPassword(loginUser.email, loginUser.password)
             .then(data => {
                 return data.user!.getIdToken();
             })

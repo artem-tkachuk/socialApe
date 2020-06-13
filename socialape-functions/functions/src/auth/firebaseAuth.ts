@@ -1,12 +1,12 @@
-import { Request, Response, NextFunction } from "express"
-import admin from '../config/admin';
+import { Request, Response, NextFunction } from "express";
+import admin from "../init/admin";
 import db from '../database/firestore';
 
 // @ts-ignore
 export const firebaseAuth = (req: Request, res: Response, next: NextFunction) => {
     let idToken: string;
 
-    const auth = req.headers.authorization!;
+    const auth = req.headers.authorization;
 
     if (auth && auth.startsWith(`Bearer`)) {
         idToken = auth.split(`Bearer `)[1];
@@ -19,8 +19,6 @@ export const firebaseAuth = (req: Request, res: Response, next: NextFunction) =>
 
     admin.auth().verifyIdToken(idToken)
         .then(decodedIdToken => {
-            console.log(decodedIdToken);
-
             // @ts-ignore
             req.user = decodedIdToken;
             return db.collection(`users`)
@@ -32,6 +30,9 @@ export const firebaseAuth = (req: Request, res: Response, next: NextFunction) =>
         .then(data => {
             // @ts-ignore
             req.user.handle = data.docs[0].data().handle;
+            // @ts-ignore
+            req.user.imageUrl = data.docs[0].data().imageUrl;
+
             return next();
         })
         .catch(err => {

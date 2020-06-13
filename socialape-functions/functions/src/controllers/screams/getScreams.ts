@@ -1,8 +1,8 @@
 import {Request, Response} from "express";
 
-import db from '../database/firestore';
+import db from '../../database/firestore';
 
-import {Scream} from "../interfaces/scream";
+import {Scream} from "../../interfaces/scream";
 
 
 export const getScreams = (req: Request, res: Response) => {

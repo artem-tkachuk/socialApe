@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import db from "../database/firestore";
+import db from "../../database/firestore";
 
 // @ts-ignore
 export const createScream = (req: Request, res: Response) => {

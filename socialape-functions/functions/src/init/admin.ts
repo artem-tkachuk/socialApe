@@ -1,8 +1,11 @@
 import * as admin from 'firebase-admin';
+import * as dotenv from 'dotenv';
 
-const ENV = process.env.ENV;
+const loadEnvSuccess = dotenv.config({ path: `../.env`}); //load environmental variables
 
-if (ENV === 'development') {
+if (loadEnvSuccess.error) { // deploy
+    admin.initializeApp();
+} else {                    // serve
     const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS!;
     const projectId = process.env.PROJECT_ID!;
 
@@ -12,8 +15,6 @@ if (ENV === 'development') {
         credential: admin.credential.cert(serviceAccount),
         databaseURL: `https://${projectId}.firebaseio.com`
     });
-} else {
-    admin.initializeApp();
 }
 
 export default admin;
