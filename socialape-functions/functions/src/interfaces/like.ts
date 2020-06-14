@@ -1,5 +1,5 @@
 export interface Like {
-    screamId: string,
+    screamId?: string,
     userHandle: string,
     createdAt: string
 }

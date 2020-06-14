@@ -8,4 +8,5 @@ export interface Scream {
     likeCount: number
     commentCount: number,
     comments?: Array<Comment>
+    userImage?: string
 }

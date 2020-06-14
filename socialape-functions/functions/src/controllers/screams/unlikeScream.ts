@@ -43,7 +43,7 @@ export const unlikeScream = (req: Request, res: Response) => {
             // @ts-ignore
             if (data.empty) {
                 return res.status(400).json({
-                    error: `Scream not yet liked`
+                    error: `Scream not liked yet!`
                 });
             } else {
                 return db
