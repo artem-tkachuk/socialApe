@@ -6,7 +6,7 @@ import {Comment} from "../../interfaces/comment";
 export const commentOnScream = (req: Request, res: Response) => {
     if (req.body.body.trim() === ``) {
         return res.status(400).json({
-            error: `Must not be empty`
+            comment: `Must not be empty`
         });
     } else {
         const newComment: Comment = {

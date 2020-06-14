@@ -5,7 +5,7 @@ import db from '../../database/firestore';
 import {Scream} from "../../interfaces/scream";
 
 
-export const getScreams = (req: Request, res: Response) => {
+export const getAllScreams = (req: Request, res: Response) => {
     db.collection('screams')
         .orderBy('createdAt', 'desc')
         .get()
@@ -20,6 +20,7 @@ export const getScreams = (req: Request, res: Response) => {
                     createdAt: doc.data().createdAt,
                     commentCount: doc.data().commentCount,
                     likeCount: doc.data().likeCount,
+                    userImage: doc.data().userImage
                 });
             });
 

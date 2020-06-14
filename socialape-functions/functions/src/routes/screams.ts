@@ -2,7 +2,7 @@ import * as express from 'express';
 
 import {firebaseAuth} from "../auth/firebaseAuth";
 
-import {getScreams} from "../controllers/screams/getScreams";
+import {getAllScreams} from "../controllers/screams/getAllScreams";
 import {createScream} from "../controllers/screams/createScream";
 import {getScream} from "../controllers/screams/getScream";
 import {commentOnScream} from "../controllers/screams/commentOnScream";
@@ -17,7 +17,7 @@ const router = express.Router();
 router.get('/screams/:screamId', getScream);
 
 // protected routes
-router.get('/screams', firebaseAuth, getScreams);
+router.get('/screams', firebaseAuth, getAllScreams);
 router.post('/create-scream', firebaseAuth, createScream);
 router.post(`/screams/:screamId/like`, firebaseAuth, likeScream);
 router.post(`/screams/:screamId/unlike`, firebaseAuth, unlikeScream);

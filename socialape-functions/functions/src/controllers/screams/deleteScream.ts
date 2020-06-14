@@ -1,6 +1,5 @@
 import {Request, Response} from "express";
 import db from "../../database/firestore";
-import {Scream} from "../../interfaces/scream";
 
 // @ts-ignore
 export const deleteScream = (req: Request, res: Response) => {
@@ -8,59 +7,25 @@ export const deleteScream = (req: Request, res: Response) => {
         .collection(`screams`)
         .doc(req.params.screamId);
 
-    let screamDocument: FirebaseFirestore.DocumentData; //temp variable to use it in the nested .then() call
-
-    let batch = db.batch();
-
     screamDocumentRef
         .get()
-        .then(async screamDoc => {
+        // @ts-ignore
+        .then(screamDoc => {
             if (!screamDoc.exists) {
                 return res.status(404).json({
                     error: `Scream not found!`
                 })
                 // @ts-ignore
-            } else if (screamDoc.data()!.userHandle !== req.user.handle) {
+            } else if (screamDoc.data()!.userHandle !== req.user.handle) {  //TODO implement same for other queries
                 return res.status(403).json({
                     error: `Unauthorized`
                 });
             } else {
-                await screamDocumentRef.delete();
-
-                screamDocument = screamDoc;
-
-                // Delete all likes related to the deleted scream
-                return db
-                    .collection(`likes`)
-                    .where(`screamId`, `==`, screamDoc.id)
-                    .get();
+                return screamDocumentRef.delete();
             }
         })
-        .then(docLikes => {
-            // @ts-ignore
-            docLikes.forEach(docLike => {
-                batch.delete(docLike.ref);
-            });
-
-            return;
-        })
         .then(() => {
-            //Delete all comments related to the deleted scream
-            return db
-                .collection(`comments`)
-                .where(`screamId`, `==`, screamDocument.id)
-                .get();
-        })
-        .then(docComments => {
-            docComments.forEach(async commentDoc => {
-                batch.delete(commentDoc.ref);
-            })
-        })
-        .then(() => {
-            return batch.commit();
-        })
-        .then(() => {
-           res.json({
+           return res.json({
                message: `Scream deleted successfully!`
            });
         })

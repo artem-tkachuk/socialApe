@@ -13,11 +13,13 @@ export const createScream = (req: Request, res: Response) => {
 
     const newScream: Scream = {
         body: req.body.body,
-        // @ts-ignores
+        // @ts-ignore
         userHandle: req.user.handle,
         commentCount: 0,
         likeCount: 0,
         createdAt: new Date().toISOString(),
+        // @ts-ignore
+        userImage: req.user.imageUrl
     };
 
     db.collection('screams')

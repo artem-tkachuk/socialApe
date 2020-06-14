@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import db from "../../database/firestore";
 
 export const markNotificationsRead = (req: Request, res: Response) => {
-    let batch = db.batch();
+    const batch = db.batch();
 
     req.body.forEach((notificationId: string) => {
         const notificationDocRef = db
@@ -28,3 +28,10 @@ export const markNotificationsRead = (req: Request, res: Response) => {
             });
         });
 };
+
+//TODO
+// screamDoc.data()!.userHandle !== req.user.handle) {
+//                 return res.status(403).json({
+//                     error: `Unauthorized`
+//                 });
+//             }

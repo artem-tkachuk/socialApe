@@ -69,11 +69,11 @@ export const signUp = (req: Request, res: Response) => {
                 console.error(err);
                 if (err.code === `auth/email-already-in-use`) {
                     return res.status(400).json({
-                        email: `Email is already in use`
+                        email: `Email is already in use!`
                     });
                 } else {
                     return res.status(500).json({
-                        error: err.code
+                        general: `Something went wrong! Please try again!`
                     })
                 }
             });

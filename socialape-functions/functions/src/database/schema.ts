@@ -27,6 +27,16 @@ const db = {
             body: 'Good job!',
             createdAt: '2020-03-15T10:59:52.798Z'
         }
+    ],
+    notifications: [
+        {
+            userHandle: 'user',
+            screamId: 'jfgjlkdfjglkldkfjglkjdfg',
+            body: 'Good job!',
+            createdAt: '2020-03-15T10:59:52.798Z',
+            sender: 'sdfsdf',
+            recipient: 'sdfds'
+        }
     ]
 };
 

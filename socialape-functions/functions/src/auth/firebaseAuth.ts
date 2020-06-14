@@ -40,3 +40,5 @@ export const firebaseAuth = (req: Request, res: Response, next: NextFunction) =>
             return res.status(403).json(err);
         })
 };
+
+//TODO why can we delete other people's stuff

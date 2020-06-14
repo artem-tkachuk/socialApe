@@ -3,7 +3,7 @@ import {Notification} from "../../interfaces/notification";
 import {QueryDocumentSnapshot} from "firebase-functions/lib/providers/firestore";
 
 export const createNotificationOnComment = (commentDoc: QueryDocumentSnapshot) => {
-    db
+    return db
         .collection(`screams`)
         .doc(commentDoc.data().screamId)
         .get()
@@ -33,10 +33,6 @@ export const createNotificationOnComment = (commentDoc: QueryDocumentSnapshot) =
                 //we don't return any response since it is not an api, but just a database trigger
                 return;
             }
-        })
-        .then(() => {
-            //we don't return any response since it is not an api, but just a database trigger
-            return;
         })
         .catch(err => {
             console.error(err);
