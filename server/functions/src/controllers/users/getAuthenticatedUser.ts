@@ -16,7 +16,9 @@ export const getAuthenticatedUser = async (req: Request, res: Response) => {
             .get();
 
         if (!userDoc.exists) {
-             ; // TODO: ???
+             return res.status(404).json({
+                 error: `This user does not exist!`
+             });
         } else {
             // @ts-ignore
             userDetails.credentials = userDoc.data();

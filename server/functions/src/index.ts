@@ -8,11 +8,9 @@ const app = express();
 
 useRoutes(app);
 
-console.log(triggers, typeof triggers);
+module.exports = {
+    ...triggers,
+    api : functions.https.onRequest(app)
+};
 
-// exports = { //TODO fix
-//     ...triggers,
-    exports.api = functions
-        .https
-        .onRequest(app);    //TODO deploy
-// };
+

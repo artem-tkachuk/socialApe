@@ -6,20 +6,22 @@ export const markNotificationsRead = async (req: Request, res: Response) => {
     try {
         const batch = db.batch();
 
-        req.body.forEach((notificationId: string) => {
-            const notificationDocRef = db
-                .collection(`notifications`)
-                .doc(notificationId);
+        // @ts-ignore
+        const notificationRefs = Object.values(req.body).map(notificationId => db.collection(`notifications`).doc(notificationId));
 
-            batch.update(notificationDocRef, {
-                read: true
-            });
+        const notificationDocs = await db.getAll(...notificationRefs);
+
+        notificationDocs.forEach(notificationDoc => {
+            // @ts-ignore
+            if (notificationDoc.exists && req.user.handle === notificationDoc.data()!.recipient) {
+                batch.update(notificationDoc.ref, { read: true });
+            }
         });
 
         await batch.commit();
 
         res.json({
-            message: `Notifications marked read!`
+            message: `All notifications that exist and ones you have access to are marked read!`
         });
     } catch(err) {
         console.error(err);

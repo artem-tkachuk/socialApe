@@ -15,7 +15,7 @@ export const deleteScream = async (req: Request, res: Response) => {
                 error: `Scream not found!`
             })
             // @ts-ignore
-        } else if (screamDoc.data()!.userHandle !== req.user.handle) {  //TODO implement same for other queries. Make sure only authorized people can do stuff
+        } else if (screamDoc.data()!.userHandle !== req.user.handle) {
             return res.status(403).json({
                 error: `Unauthorized`
             });

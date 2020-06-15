@@ -2,7 +2,6 @@ import db from "../../firestore";
 
 import {ChangeJson} from "firebase-functions";
 
-//TODO test
 export const onUserImageChange = async (change: ChangeJson) => {
     const dataBefore = change.before.data();
     const dataAfter = change.after.data();
