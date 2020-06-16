@@ -17,7 +17,7 @@ const router = express.Router();
 router.get('/screams/:screamId', getScream);
 
 // protected routes
-router.get('/screams', firebaseAuth, getAllScreams);
+router.get('/screams', getAllScreams);
 router.post('/create-scream', firebaseAuth, createScream);
 router.post(`/screams/:screamId/like`, firebaseAuth, likeScream);
 router.post(`/screams/:screamId/unlike`, firebaseAuth, unlikeScream);
