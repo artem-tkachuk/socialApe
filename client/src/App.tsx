@@ -1,55 +1,77 @@
 import React, {Component} from 'react';
 import { BrowserRouter as Router, Route, Switch  } from "react-router-dom";
 
-import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import jwtDecode from 'jwt-decode';
+import axios from 'axios';
 
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
+import { theme } from "./styles/theme";
 import './App.css';
+
+//Redux
+import { Provider } from "react-redux";
+import store from './redux/store';
+import { SET_AUTHENTICATED } from "./redux/types";
+import { getUserData, logOutUser } from "./redux/actions/userActions";
 
 // Pages
 import Home from "./pages/home";
 import Login from "./pages/login";
 import SignUp from "./pages/sign-up";
+
+// Components
+import AuthRoute from './util/authRoute';
 import NavBar from "./components/NavBar";
 
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-            light: '#33c9dc',
-            main: '#00bcd4',
-            dark: '#008394',
-            contrastText: '#fff'
-        },
-        secondary: {
-            light: '#ff6333',
-            main: '#ff3d00',
-            dark: '#b22a00',
-            contrastText: '#fff'
-        }
-    },
-    typography: {
-        // @ts-ignore
-        useNextVariants: true
+const token  = localStorage.FirebaseIdToken;
+
+if (token) {
+    const decodedIdToken = jwtDecode(token);
+
+    console.log(decodedIdToken);
+
+    // @ts-ignore
+    if (decodedIdToken.exp * 1000 < Date.now()){
+        store.dispatch(logOutUser());
+
+        window.location.href = '/login';
+    } else {
+        store.dispatch({
+            type: SET_AUTHENTICATED
+        });
+
+        axios.defaults.headers.common['Authorization'] = token;
+
+        store.dispatch(getUserData());
     }
-});
+}
 
 class App extends Component {
     render() {
         return (
             <MuiThemeProvider theme={theme}>
-                <div className="App">
+                <Provider store={store}>
                     <Router>
                         <NavBar />
 
                         <div className={"container"}>
                             <Switch>
                                 <Route exact path={"/"} component = {Home} />
-                                <Route exact path = {"/login"} component = {Login} />
-                                <Route exact path = {"/sign-up"} component= {SignUp} />
+
+                                <AuthRoute
+                                    exact
+                                    path = {"/login"}
+                                    component = {Login}
+                                />
+                                <AuthRoute
+                                    exact
+                                    path = {"/sign-up"}
+                                    component= {SignUp}
+                                />
                             </Switch>
                         </div>
                     </Router>
-                </div>
+                </Provider>
             </MuiThemeProvider>
         );
     }

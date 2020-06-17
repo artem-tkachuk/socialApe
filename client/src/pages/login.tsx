@@ -2,13 +2,10 @@ import React, {Component} from 'react';
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 
-import axios from 'axios';
-
-import { withStyles } from "@material-ui/core";
+import {Theme, withStyles} from "@material-ui/core";
 
 
 import AppIcon from '../images/icon.png';
-import styles from "../styles/login";
 
 // Material UI imports
 import { Grid } from "@material-ui/core";
@@ -17,6 +14,14 @@ import { TextField } from "@material-ui/core";
 import { Button } from "@material-ui/core";
 import { CircularProgress } from "@material-ui/core";
 
+//Redux
+import { connect } from "react-redux";
+import { loginUser } from "../redux/actions/userActions";
+
+const styles = (theme: Theme) => ({
+    // @ts-ignore
+    ...theme.styling
+});
 
 class Login extends Component {
     constructor() {
@@ -25,17 +30,23 @@ class Login extends Component {
         this.state = {
             email: '',
             password: '',
-            loading: false,
             errors: {}
+        }
+    }
+
+    componentWillReceiveProps(nextProps: Readonly<{}>, nextContext: any): void {
+        // @ts-ignore
+        if (nextProps.UI.errors) {
+            this.setState({
+                // @ts-ignore
+                errors: nextProps.UI.errors
+            });
         }
     }
 
     // @ts-ignore
     handleSubmit = async (event) => {
         event.preventDefault();
-        this.setState({
-            loading: true
-        });
 
         const userData = {
             // @ts-ignore
@@ -44,23 +55,8 @@ class Login extends Component {
             password: this.state.password
         };
 
-        try {
-            this.setState({
-                loading: false
-            });
-
-            const data = await axios.post('/login', userData);
-
-            console.log(data.data);
-
-            // @ts-ignore
-            this.props.history.push('/');
-        } catch (err) {
-            this.setState({
-                errors: err.response.data,
-                loading: false
-            })
-        }
+        // @ts-ignore
+        this.props.loginUser(userData, this.props.history);
     };
 
     handleChange = (event: { target: { name: any; value: any; }; }) => {
@@ -72,9 +68,9 @@ class Login extends Component {
 
     render() {
         // @ts-ignore
-        const { classes } = this.props;
+        const { classes, UI: { loading } } = this.props;
         // @ts-ignore
-        const { errors, loading } = this.state;
+        const { errors } = this.state;
 
         return (
             <div>
@@ -135,7 +131,9 @@ class Login extends Component {
                                 disabled={loading}
                             >
                                 Login
-                                {loading && (<CircularProgress size={30} className={classes.progress }/>) }
+                                {
+                                    loading && (<CircularProgress size={30} className={classes.progress }/>)   //TODO fix
+                                }
                             </Button>
 
                             <br/>
@@ -155,8 +153,20 @@ class Login extends Component {
 
 // @ts-ignore
 Login.propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    loginUser: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
+    UI: PropTypes.object.isRequired
+};
+
+const mapStateToPros = (state: { user: any; UI: any; }) => ({
+    user: state.user,
+    UI: state.UI
+});
+
+const mapActionsToProps = {
+    loginUser
 };
 
 // @ts-ignore
-export default withStyles(styles)(Login);
+export default connect(mapStateToPros, mapActionsToProps)(withStyles(styles)(Login));
