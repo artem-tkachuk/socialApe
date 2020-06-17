@@ -56,11 +56,9 @@ class Profile extends Component {
                 credentials: {
                     handle, createdAt, imageUrl, bio, website, location
                 },
+                loading,
                 authenticated
             },
-            // @ts-ignore
-            loading,
-            // @ts-ignore
         } = this.props;
 
         let profileMarkup = !loading ?  //if we are not loading the details right now

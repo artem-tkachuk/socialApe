@@ -8,7 +8,8 @@ const initialState = {
     notification: []
 };
 
-export default  (state = initialState, action: { type: any; payload: any; }) => {
+// @ts-ignore
+export default  (state = initialState, action) => {
     switch (action.type) {
         case SET_AUTHENTICATED:
             return {
