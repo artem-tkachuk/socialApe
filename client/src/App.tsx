@@ -23,7 +23,7 @@ import SignUp from "./pages/sign-up";
 import AuthRoute from './util/authRoute';
 import NavBar from "./components/NavBar";
 
-const token  = localStorage.FirebaseIdToken;
+const token  = localStorage.firebaseIdToken;
 
 if (token) {
     const decodedIdToken = jwtDecode(token);
