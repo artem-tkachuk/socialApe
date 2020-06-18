@@ -1,47 +1,54 @@
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI } from "../types";
+import { SET_SCREAMS, UNLIKE_SCREAM, LIKE_SCREAM, LOADING_DATA } from "../types";
 import axios from "axios";
 
+// Get all screams
 // @ts-ignore
-export const loginUser = (userData: any, history: string[]) => async (dispatch) => {
+export const getScreams = () => async (dispatch) => {
     try {
         dispatch({
-            type: LOADING_UI
+            type: LOADING_DATA
         });
 
-        const loginResponse = await axios.post('/login', userData);
+        const screamsDocs = await axios.get('/screams');
 
-        console.log(loginResponse.data);
-
-        // store token if the page is refreshed
-        const firebaseIdToken = `Bearer ${loginResponse.data.token}`;
-        localStorage.setItem(`FirebaseIdToken`, firebaseIdToken);
-
-        // set token as an authorization header so that we are authorized
-        axios.defaults.headers.common['Authorization'] = firebaseIdToken;
-
-        dispatch(getUserData());
         dispatch({
-            type: CLEAR_ERRORS
+           type: SET_SCREAMS,
+           payload: screamsDocs.data
         });
 
-        history.push('/');
     } catch (err) {
         dispatch({
-            type: SET_ERRORS,
-            payload: err.response.data
+            type: SET_SCREAMS,
+            payload: []
         });
     }
 };
 
+// Like a scream
 // @ts-ignore
-export const getUserData = () => async (dispath) => {
+export const likeScream = (screamId: string) => async (dispatch) => {
     try {
-        const userData = await axios.get('/user');
+        const likeResponse = await axios.post(`/screams/${screamId}/like`);
 
-        dispath({
-            type: SET_USER,
-            payload: userData.data
-        })
+        dispatch({
+            type: LIKE_SCREAM,
+            payload: likeResponse.data
+        });
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+// Unlike a scream
+// @ts-ignore
+export const unlikeScream = (screamId: string) => async (dispatch) => {
+    try {
+        const unlikeResponse = await axios.post(`/screams/${screamId}/unlike`);
+
+        dispatch({
+            type: UNLIKE_SCREAM,
+            payload: unlikeResponse.data
+        });
     } catch (err) {
         console.error(err);
     }

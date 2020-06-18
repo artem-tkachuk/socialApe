@@ -1,34 +1,39 @@
-import { SET_ERRORS, CLEAR_ERRORS, LOADING_UI } from "../types";
+import {SET_SCREAM, SET_SCREAMS, UNLIKE_SCREAM, LOADING_DATA, LIKE_SCREAM} from "../types";
 
 const initialState = {
-    loading: false,
-    errors: null
+    screams: [],
+    scream: {},
+    loading: false
 };
 
 // @ts-ignore
 export default (state = initialState, action) => {
     switch (action.type) {
-        case SET_ERRORS:
-            return {
-                ...state,
-                loading: false,
-                errors: action.payload
-            };
-
-        case CLEAR_ERRORS:
-            return {
-                ...state,
-                loading: false,
-                errors: null
-            };
-
-        case LOADING_UI:
+        case LOADING_DATA:
             return {
                 ...state,
                 loading: true
             };
+        case SET_SCREAMS:
+            return {
+                ...state,
+                screams: action.payload,
+                loading: false
+            };
+        case LIKE_SCREAM:
+        case UNLIKE_SCREAM:
+            // @ts-ignore
+            let index = state.screams.findIndex((scream) => scream.screamId === action.payload.screamId);
 
+            // @ts-ignore
+            state.screams[index] = action.payload;
+
+            return {
+                ...state
+            };
         default:
-            return state;
+            return {
+                ...state
+            };
     }
-}
+};
