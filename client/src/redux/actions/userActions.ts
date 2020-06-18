@@ -56,33 +56,22 @@ export const signUpUser = (newUserData: any, history: string[]) => async (dispat
 };
 
 
-
-
 // @ts-ignore
-export const getUserData = () => async (dispath) => {
+export const getUserData = () => async (dispatch) => {
     try {
-        dispath({
+        dispatch({
             type: LOADING_USER
         });
 
         const userData = await axios.get('/user');
 
-        dispath({
+        dispatch({
             type: SET_USER,
             payload: userData.data
         })
     } catch (err) {
         console.error(err);
     }
-};
-
-const setAuthorizationHeader = (token: string) => {
-    // store token if the page is refreshed
-    const firebaseIdToken = `Bearer ${token}`;
-    localStorage.setItem(`firebaseIdToken`, firebaseIdToken);
-
-    // set token as an authorization header so that we are authorized
-    axios.defaults.headers.common['Authorization'] = firebaseIdToken;
 };
 
 // @ts-ignore
@@ -107,4 +96,31 @@ export const uploadImage = (formData) => async (dispatch) =>{
     } catch (err) {
         console.error(err);
     }
+};
+
+
+// @ts-ignore
+export const editUserDetails = (userDetails) => async (dispatch) => {
+    try {
+        dispatch({
+            type: LOADING_USER
+        });
+
+        await axios.post('/user', userDetails);
+
+        dispatch(getUserData());
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
+//helper function
+const setAuthorizationHeader = (token: string) => {
+    // store token if the page is refreshed
+    const firebaseIdToken = `Bearer ${token}`;
+    localStorage.setItem(`firebaseIdToken`, firebaseIdToken);
+
+    // set token as an authorization header so that we are authorized
+    axios.defaults.headers.common['Authorization'] = firebaseIdToken;
 };
