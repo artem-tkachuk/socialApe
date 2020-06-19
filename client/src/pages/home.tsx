@@ -22,6 +22,7 @@ class Home extends Component {
         const { screams, loading } = this.props.data;
 
         let recentScreamsMarkup = !loading ? (
+            // @ts-ignore
             screams.map((scream: ScreamInterface) => <Scream key={scream.screamId} scream={scream} />)
         ) : <p>Loading...</p>;
 

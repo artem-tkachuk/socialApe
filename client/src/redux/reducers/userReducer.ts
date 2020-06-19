@@ -38,7 +38,7 @@ export default  (state = initialState, action) => {
                     {
                         // @ts-ignore
                         userHandle: state.credentials.handle,
-                        screamId: action.payload
+                        screamId: action.payload.screamId
                     }
                 ]
             };
@@ -46,7 +46,7 @@ export default  (state = initialState, action) => {
             return {
                 ...state,
                 // @ts-ignore
-                likes: state.likes.filter(like => like.screamId === action.payload.screamId)
+                likes: state.likes.filter(like => like.screamId !== action.payload.screamId)
             };
         default:
             return state;
