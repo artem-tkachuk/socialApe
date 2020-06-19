@@ -8,9 +8,9 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import MyButton from '../util/myButton';
+import PostScream from "./PostScream";
 
 // Icons
-import AddIcon from '@material-ui/icons/Add';
 import HomeIcon from '@material-ui/icons/Home';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
@@ -26,9 +26,7 @@ class NavBar extends Component {
                        {
                            authenticated ? (
                                <Fragment>
-                                   <MyButton tip={"Post a scream"} onClick={""}>
-                                       <AddIcon />
-                                   </MyButton>
+                                   <PostScream />
 
                                    <Link to={"/"}>
                                        <MyButton tip={"Home"} onClick={""}>

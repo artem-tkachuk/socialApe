@@ -1,10 +1,11 @@
 import * as React from 'react';
 
-// Component
+// Components
 import PropTypes from 'prop-types';
 import {Component} from 'react';
 import { Link } from "react-router-dom";
 import MyButton from '../util/myButton';
+import DeleteScream from "./DeleteScream";
 
 // Redux
 import { connect } from "react-redux";
@@ -53,7 +54,7 @@ class Scream extends Component {
         // @ts-ignore
         const { body, userImage, createdAt, userHandle, screamId, likeCount, commentCount } = this.props.scream;
         // @ts-ignore
-        const { authenticated } = this.props.user;
+        const { authenticated, credentials: { handle } } = this.props.user;
 
         const likeButton = !authenticated ? (
             // @ts-ignore
@@ -74,6 +75,14 @@ class Scream extends Component {
             )
         );
 
+
+        const deleteButton = authenticated && userHandle == handle ? (
+            // @ts-ignore
+            <DeleteScream screamId={screamId} />
+        ) : (
+            ''
+        );
+
         return (
             <Card className={classes.card}>
                 <CardMedia
@@ -89,6 +98,8 @@ class Scream extends Component {
                         to={`/users/${userHandle}`}
                         color={"primary"}
                     >{userHandle}</Typography>
+
+                    {deleteButton}
 
                     <Typography variant={"body2"}>
                         {dayjs(createdAt).fromNow()}
