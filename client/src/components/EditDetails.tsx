@@ -15,7 +15,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import EditIcon from '@material-ui/icons/Edit';
 
-import MyButton from '../util/myButton';
+import MyButton from './util/myButton';
 
 // @ts-ignore
 const styles = (theme) => ({

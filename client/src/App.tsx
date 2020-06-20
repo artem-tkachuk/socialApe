@@ -20,7 +20,7 @@ import Login from "./pages/login";
 import SignUp from "./pages/sign-up";
 
 // Components
-import AuthRoute from './util/authRoute';
+import AuthRoute from './components/util/authRoute';
 import NavBar from "./components/NavBar";
 
 const token  = localStorage.firebaseIdToken;

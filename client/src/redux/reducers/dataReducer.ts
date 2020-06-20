@@ -25,6 +25,11 @@ export default (state = initialState, action) => {
                 loading: true
             };
 
+        case SET_SCREAM:
+            return {
+                ...state,
+                scream: action.payload
+            };
         case SET_SCREAMS:
             return {
                 ...state,

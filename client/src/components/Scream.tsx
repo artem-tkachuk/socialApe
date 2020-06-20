@@ -4,8 +4,11 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import {Component} from 'react';
 import { Link } from "react-router-dom";
-import MyButton from '../util/myButton';
+
+// Components
+import MyButton from './util/myButton';
 import DeleteScream from "./DeleteScream";
+import ScreamDialog from "./ScreamDialog";
 
 // Redux
 import { connect } from "react-redux";
@@ -115,6 +118,13 @@ class Scream extends Component {
                     </MyButton>
 
                     <span> {commentCount} comment(s) </span>
+
+
+                    <ScreamDialog
+                        // @ts-ignore
+                        screamId={screamId}
+                        userHandle={userHandle}
+                    />
                 </CardContent>
             </Card>
         );
