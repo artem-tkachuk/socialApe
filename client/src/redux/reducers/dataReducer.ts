@@ -5,7 +5,7 @@ import {
     LOADING_DATA,
     LIKE_SCREAM,
     DELETE_SCREAM,
-    POST_SCREAM
+    POST_SCREAM, SUBMIT_COMMENT
 } from "../types";
 
 const initialState = {
@@ -45,6 +45,11 @@ export default (state = initialState, action) => {
             // @ts-ignore
             state.screams[index] = action.payload;
 
+            // @ts-ignore
+            if (state.scream.screamId === action.payload.screamId) {
+                state.scream = action.payload
+            }
+
             return {
                 ...state
             };
@@ -65,6 +70,16 @@ export default (state = initialState, action) => {
                     ...state.screams
                 ]
             };
+
+        case SUBMIT_COMMENT:
+            return {
+                ...state,
+                scream: {
+                    ...state.scream,
+                    // @ts-ignore
+                    comments: [action.payload, ...state.scream.comments]
+                }
+            };;
 
         default:
             return {

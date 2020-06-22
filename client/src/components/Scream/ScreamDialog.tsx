@@ -3,18 +3,19 @@ import PropTypes from 'prop-types';
 
 // Redux
 import { connect } from "react-redux";
-import { getScream } from "../redux/actions/dataActions";
+import { getScream, clearErrors } from "../../redux/actions/dataActions";
 
 // Components
-import MyButton from './util/myButton';
+import MyButton from '../util/myButton';
 import { Link } from 'react-router-dom';
+import Comments from "./Comments";
+import CommentForm from "./CommentForm";
 
 // Material UI
 import {withStyles} from '@material-ui/core';
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -24,18 +25,13 @@ import UnfoldMore from '@material-ui/icons/UnfoldMore';
 
 // Time
 import dayjs from "dayjs";
-
+import LikeButton from "./LikeButton";
+import ChatIcon from "@material-ui/icons/Chat";
 
 // Styles
-import {theme} from "../styles/theme";
-
 // @ts-ignore
 const styles = theme => ({
     ...theme.styling,
-    invisibleSeparator: {
-        border: 'none',
-        margin: 4
-    },
     profileImage: {
         maxWidth: 200,
         height: 200,
@@ -48,6 +44,15 @@ const styles = theme => ({
     closeButton: {
         position: 'absolute',
         left: '90%'
+    },
+    expandButton: {
+        position: 'absolute',
+        left: '90%'
+    },
+    spinnerDiv: {
+        textAlign: 'center',
+        marginTop: 50,
+        marginBottom: 50
     }
 });
 
@@ -70,6 +75,9 @@ class ScreamDialog extends Component {
         this.setState({
             open: false
         });
+
+        // @ts-ignore
+        this.props.clearErrors();
     };
 
     render() {
@@ -84,7 +92,8 @@ class ScreamDialog extends Component {
                 likeCount,
                 commentCount,
                 userImage,
-                userHandle
+                userHandle,
+                comments
             },
             // @ts-ignore
             UI: {
@@ -93,14 +102,16 @@ class ScreamDialog extends Component {
         } = this.props;
 
         const dialogMarkup = loading ? (
-            <CircularProgress size={200} />
+            <div className={classes.spinnerDiv}>
+                <CircularProgress size={200} thickness={2} />
+            </div>
         ) : (
             <Grid container spacing={2}>
                 <Grid item sm={5}>
                     <img src={userImage} alt={"Profile image"} className={classes.profileImage} />
                 </Grid>
 
-                <Grid item sm={5}>
+                <Grid item sm={6}>
                     <Typography
                         component={Link}
                         color={"primary"}
@@ -123,7 +134,28 @@ class ScreamDialog extends Component {
                     <Typography variant={"body1"}>
                         {body}
                     </Typography>
+
+                    <LikeButton
+                        // @ts-ignore
+                        screamId={screamId}
+                    />
+                    <span> {likeCount} likes </span>
+
+                    <MyButton tip={"comments"} onClick={""}>
+                        <ChatIcon color={"primary"}/>
+                    </MyButton>
+                    <span>{commentCount} comment(s) </span>
                 </Grid>
+
+                <hr className={classes.visibleSeparator} />
+                <CommentForm
+                    // @ts-ignore
+                    screamId={screamId}
+                />
+                <Comments
+                    // @ts-ignore
+                    comments={comments}
+                />
             </Grid>
         );
 
@@ -164,6 +196,7 @@ class ScreamDialog extends Component {
 
 // @ts-ignore
 ScreamDialog.propTypes = {
+    clearErrors: PropTypes.func.isRequired,
     getScream: PropTypes.func.isRequired,
     screamId: PropTypes.string.isRequired,
     userHandle: PropTypes.string.isRequired,
@@ -178,7 +211,8 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = ({
-    getScream
+    getScream,
+    clearErrors
 });
 
 export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(ScreamDialog));

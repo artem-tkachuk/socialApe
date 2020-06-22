@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";  //TODO figure out?
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
-import MyButton from './util/myButton';
-import PostScream from "./PostScream";
+import MyButton from '../util/myButton';
+import PostScream from "../Scream/PostScream";
 
 // Icons
 import HomeIcon from '@material-ui/icons/Home';

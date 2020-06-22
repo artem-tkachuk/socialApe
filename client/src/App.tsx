@@ -21,7 +21,7 @@ import SignUp from "./pages/sign-up";
 
 // Components
 import AuthRoute from './components/util/authRoute';
-import NavBar from "./components/NavBar";
+import NavBar from "./components/Layout/NavBar";
 
 const token  = localStorage.firebaseIdToken;
 
@@ -63,11 +63,14 @@ class App extends Component {
                                     path = {"/login"}
                                     component = {Login}
                                 />
+
                                 <AuthRoute
                                     exact
                                     path = {"/sign-up"}
                                     component= {SignUp}
                                 />
+
+                                <Route exact path={"/users/:handle"} component={user} />
                             </Switch>
                         </div>
                     </Router>

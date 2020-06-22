@@ -9,7 +9,8 @@ import {
     CLEAR_ERRORS,
     POST_SCREAM,
     SET_SCREAM,
-    STOP_LOADING_UI
+    STOP_LOADING_UI,
+    SUBMIT_COMMENT
 } from '../types';
 import axios from "axios";
 
@@ -118,6 +119,27 @@ export const unlikeScream = (screamId: string) => async (dispatch) => {
     }
 };
 
+// Submit a comment
+// @ts-ignore
+export const submitComment = (screamId, commentData) => async (dispatch) => {
+    try {
+        const postCommentResponse = await axios.post(`screams/${screamId}/comment`, commentData);
+
+        dispatch({
+            type: SUBMIT_COMMENT,
+            payload: postCommentResponse.data
+        });
+
+        dispatch(clearErrors());
+    } catch (err) {
+
+        dispatch({
+            type: SET_ERRORS,
+            payload: err.response.data
+        });
+    }
+};
+
 // Delete a scream
 // @ts-ignore
 export const deleteScream = (screamId: string) => async (dispatch) => {
@@ -133,7 +155,29 @@ export const deleteScream = (screamId: string) => async (dispatch) => {
     }
 };
 
-// Clear errors
+// Get user data for displaying the profile page
+// @ts-ignore
+export const getUserProfileData = (userHandle: string) => async dispatch => {
+    try {
+        dispatch({
+            type: LOADING_DATA
+        });
+
+        const getUserProfileDataResponse = await axios.get(`/user/${userHandle}`);
+
+        dispatch({
+            type: SET_SCREAMS,
+            payload: getUserProfileDataResponse.data.screams
+        });
+    } catch (err) {
+        dispatch({
+            type: SET_SCREAMS,
+            payload: null
+        })
+    }
+};
+
+// Clear errors. An example of actions creator
 // @ts-ignore
 export const clearErrors = () => (dispatch) => {
     dispatch({

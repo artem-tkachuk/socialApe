@@ -7,12 +7,12 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import MyButton from './util/myButton';
+import MyButton from '../util/myButton';
 import Button from "@material-ui/core/Button";
 
 // Redux
 import { connect } from "react-redux";
-import { deleteScream } from "../redux/actions/dataActions";
+import { deleteScream } from "../../redux/actions/dataActions";
 
 
 import { withStyles } from "@material-ui/core";

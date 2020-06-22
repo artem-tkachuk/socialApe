@@ -9,12 +9,12 @@ import { Link } from 'react-router-dom';
 import EditDetails from "./EditDetails";
 
 // Redux
-import { uploadImage, logOutUser } from "../redux/actions/userActions";
+import { uploadImage, logOutUser } from "../../redux/actions/userActions";
 
 // Material UI imports
 import {Button, Paper, Theme, Typography, withStyles} from "@material-ui/core";
 import MuiLink from "@material-ui/core/Link";
-import MyButton from './util/myButton';
+import MyButton from '../util/myButton';
 
 // Icons
 import { LocationOn, CalendarToday } from '@material-ui/icons';
