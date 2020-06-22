@@ -53,7 +53,8 @@ export const getAuthenticatedUser = async (req: Request, res: Response) => {
                     createdAt: notificationDoc.data().createdAt,
                     read: notificationDoc.data().read,
                     type: notificationDoc.data().type,
-                    screamId: notificationDoc.data().screamId
+                    screamId: notificationDoc.data().screamId,
+                    notificationId: notificationDoc.id
                 });
             });
 

@@ -123,7 +123,7 @@ export const unlikeScream = (screamId: string) => async (dispatch) => {
 // @ts-ignore
 export const submitComment = (screamId, commentData) => async (dispatch) => {
     try {
-        const postCommentResponse = await axios.post(`screams/${screamId}/comment`, commentData);
+        const postCommentResponse = await axios.post(`/screams/${screamId}/comment`, commentData);
 
         dispatch({
             type: SUBMIT_COMMENT,

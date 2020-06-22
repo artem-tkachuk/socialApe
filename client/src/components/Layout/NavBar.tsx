@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";  //TODO figure out?
+import { Link } from "react-router-dom";
 
 // Material UI imports
 import AppBar from "@material-ui/core/AppBar";
@@ -9,6 +9,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import MyButton from '../util/myButton';
 import PostScream from "../Scream/PostScream";
+import Notifications from "./Notifications";
 
 // Icons
 import HomeIcon from '@material-ui/icons/Home';
@@ -34,9 +35,7 @@ class NavBar extends Component {
                                        </MyButton>
                                    </Link>
 
-                                   <MyButton tip={"Notifications"} onClick={""}>
-                                       <NotificationsIcon />
-                                   </MyButton>
+                                   <Notifications />
                                </Fragment>
                            ) : (
                                <Fragment>

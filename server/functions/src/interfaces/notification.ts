@@ -5,4 +5,5 @@ export interface Notification {
     screamId: string,
     type: string,
     createdAt: string
+    notificationId?: string
 }

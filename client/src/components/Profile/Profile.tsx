@@ -21,6 +21,7 @@ import { LocationOn, CalendarToday } from '@material-ui/icons';
 import EditIcon from '@material-ui/icons/Edit';
 import LinkIcon from '@material-ui/icons/Link';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
+import ProfileSkeleton from "../util/ProfileSkeleton";
 
 const styles = (theme: Theme) => ({
     // @ts-ignore
@@ -147,7 +148,7 @@ class Profile extends Component {
                         </Button>
                     </div>
                 </Paper>
-            )) : (<p>Loading...</p>);
+            )) : (<ProfileSkeleton />);
 
         return profileMarkup;
     }

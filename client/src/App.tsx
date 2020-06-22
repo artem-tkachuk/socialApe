@@ -18,10 +18,14 @@ import { getUserData, logOutUser } from "./redux/actions/userActions";
 import Home from "./pages/home";
 import Login from "./pages/login";
 import SignUp from "./pages/sign-up";
+import User from "./pages/user";
 
 // Components
 import AuthRoute from './components/util/authRoute';
 import NavBar from "./components/Layout/NavBar";
+
+axios.defaults.baseURL = "https://us-central1-socialape-ea8b3.cloudfunctions.net/api";
+
 
 const token  = localStorage.firebaseIdToken;
 
@@ -70,7 +74,9 @@ class App extends Component {
                                     component= {SignUp}
                                 />
 
-                                <Route exact path={"/users/:handle"} component={user} />
+                                <Route exact path={"/users/:handle"} component={User} />
+
+                                <Route exact path={`/users/:handle/screams/:screamId`} component={User} />
                             </Switch>
                         </div>
                     </Router>

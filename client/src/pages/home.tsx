@@ -6,6 +6,7 @@ import { getScreams } from "../redux/actions/dataActions";
 import Grid from "@material-ui/core/Grid";
 
 import Scream from '../components/Scream/Scream';
+import ScreamSkeleton from "../components/util/ScreamSkeleton";
 import Profile from '../components/Profile/Profile';
 
 //interface
@@ -23,8 +24,8 @@ class Home extends Component {
 
         let recentScreamsMarkup = !loading ? (
             // @ts-ignore
-            screams.map((scream: ScreamInterface) => <Scream key={scream.screamId} scream={scream} />)
-        ) : <p>Loading...</p>;
+            screams ? screams.map((scream: ScreamInterface) => <Scream key={scream.screamId} scream={scream} />) : 'No screams here yet'
+        ) : <ScreamSkeleton />;
 
         return (
             <div>

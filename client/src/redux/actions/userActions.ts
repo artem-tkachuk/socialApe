@@ -1,4 +1,12 @@
-import {SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED, LOADING_USER} from "../types";
+import {
+    SET_USER,
+    SET_ERRORS,
+    CLEAR_ERRORS,
+    LOADING_UI,
+    SET_UNAUTHENTICATED,
+    LOADING_USER,
+    MARK_NOTIFICATIONS_READ
+} from "../types";
 import axios from "axios";
 
 // @ts-ignore
@@ -111,6 +119,19 @@ export const editUserDetails = (userDetails) => async (dispatch) => {
         dispatch(getUserData());
     } catch (err) {
         console.error(err);
+    }
+};
+
+// @ts-ignore
+export const markNotificationsRead = (notificationsIds) => async dispatch => {
+    try {
+        await axios.post('/notifications', notificationsIds);
+
+        dispatch({
+            type: MARK_NOTIFICATIONS_READ
+        });
+    } catch (e) {
+        console.error(e);
     }
 };
 

@@ -132,7 +132,7 @@ class Login extends Component {
                             >
                                 Login
                                 {
-                                    loading && (<CircularProgress size={30} className={classes.progress }/>)   //TODO fix
+                                    loading && (<CircularProgress size={30} className={classes.progress }/>)
                                 }
                             </Button>
 

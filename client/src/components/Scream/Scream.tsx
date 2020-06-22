@@ -28,16 +28,12 @@ import { withStyles } from "@material-ui/core";
 
 // Icons
 import ChatIcon from '@material-ui/icons/Chat';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 // Styles
 import { styles } from "../../styles/scream";
 
 
 class Scream extends Component {
-
-
     render() {
         dayjs.extend(relativeTime);
 
@@ -96,6 +92,8 @@ class Scream extends Component {
                         // @ts-ignore
                         screamId={screamId}
                         userHandle={userHandle}
+                        // @ts-ignore
+                        openDialog={this.props.openDialog}
                     />
                 </CardContent>
             </Card>
@@ -107,7 +105,8 @@ class Scream extends Component {
 Scream.propTypes = {
     user: PropTypes.object.isRequired,
     scream: PropTypes.object.isRequired,
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    openDialog: PropTypes.bool
 };
 
 // @ts-ignore

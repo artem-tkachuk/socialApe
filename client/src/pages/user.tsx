@@ -13,18 +13,45 @@ import axios from 'axios';
 
 // Material UI imports
 import Grid from "@material-ui/core/Grid";
-import Profile from "../components/Profile/Profile";
+import StaticProfile from "../components/Profile/StaticProfile";
+import {withStyles} from "@material-ui/core";
+import ScreamSkeleton from "../components/util/ScreamSkeleton";
+import ProfileSkeleton from "../components/util/ProfileSkeleton";
+
+// styles
+// @ts-ignore
+const styles = theme => ({
+    ...theme.styling
+});
 
 class User extends Component {
-    async componentDidMount(): void {
+    state = {
+        profile: null,
+        screamIdParam: null
+    };
+
+    async componentDidMount() {
         try {
+            // @ts-ignore
             const handle = this.props.match.params.handle;
+            // @ts-ignore
+            const screamId = this.props.match.params.screamId;
+
+            if (screamId) {
+                this.setState({
+                    screamIdParam: screamId
+                });
+            }
+
+            // @ts-ignore
             this.props.getUserProfileData(handle);
 
             const getUserDetailsResponse = await axios.get(`/user/${handle}`);
 
+            console.log(`User details!`);
+
             this.setState({
-                profile: getUserDetailsResponse.data.user
+                profile: getUserDetailsResponse.data.credentials
             });
         } catch (err) {
             console.error(err);
@@ -32,15 +59,29 @@ class User extends Component {
     }
 
     render() {
+        // @ts-ignore
         const { screams, loading } = this.props.data;
+        const { screamIdParam } = this.state;
 
-        const screamsMarkup = loading ? (
-            <p>Loading data...</p>
+        const screamsMarkup = loading ? (   //TODO fix the new comment action
+            <ScreamSkeleton />
         ) : (
             screams === null ? (
                 <p>No screams here yet!</p>
-            ) : (
+            ) : !screamIdParam ? (
+                // @ts-ignore
                 screams.map(scream => <Scream key={scream.screamId} scream={scream} />)
+            ) : (
+                // @ts-ignore
+                screams.map(scream => {
+                    if (scream.screamId !== screamIdParam) {
+                        // @ts-ignore
+                        return <Scream key={scream.screamId} scream={scream} />
+                    } else {
+                        // @ts-ignore
+                        return <Scream key={scream.screamId} scream={scream} openDialog />
+                    }
+                })
             )
         );
 
@@ -51,7 +92,16 @@ class User extends Component {
                         {screamsMarkup}
                     </Grid>
                     <Grid item sm={4} xs={8}>
-                        <StaticProfile profile={this.state.profile} />
+                        {
+                            this.state.profile === null ? (
+                                <ProfileSkeleton />
+                            ) : (
+                                <StaticProfile
+                                    // @ts-ignore
+                                    profile={this.state.profile}
+                                />
+                            )
+                        }
                     </Grid>
                 </Grid>
             </div>
@@ -59,18 +109,21 @@ class User extends Component {
     }
 }
 
+// @ts-ignore
 User.propTypes = {
     getUserProfileData: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired
 };
 
+// @ts-ignore
 const mapStateToProps = state => ({
     data: state.data
 });
 
-const mapActionsToProps = state => {
+// @ts-ignore
+const mapActionsToProps = {
     getUserProfileData
 };
 
 
-export default User;
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(User));

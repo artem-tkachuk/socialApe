@@ -27,6 +27,7 @@ import UnfoldMore from '@material-ui/icons/UnfoldMore';
 import dayjs from "dayjs";
 import LikeButton from "./LikeButton";
 import ChatIcon from "@material-ui/icons/Chat";
+import user from "../../pages/user";
 
 // Styles
 // @ts-ignore
@@ -59,12 +60,36 @@ const styles = theme => ({
 
 class ScreamDialog extends Component {
     state = {
-        open: false
+        open: false,
+        oldPath: '',
+        newPath: ''
     };
 
+    componentDidMount() {
+        // @ts-ignore
+        if (this.props.openDialog) {
+            this.handleOpen();
+        }
+    }
+
     handleOpen = () => {
+        let oldPath = window.location.pathname;
+        // @ts-ignore
+        const { userHandle, screamId } = this.props;
+
+        const newPath = `/users/${userHandle}/screams/${screamId}`;
+
+        if (oldPath === newPath) {  //edge case
+            oldPath = `/users/${userHandle}`;
+        }
+
+        // @ts-ignore
+        window.history.pushState(null, null, newPath);
+
         this.setState({
-            open: true
+            open: true,
+            oldPath,
+            newPath
         });
 
         // @ts-ignore
@@ -72,6 +97,9 @@ class ScreamDialog extends Component {
     };
 
     handleClose = () => {
+        // @ts-ignore
+        window.history.pushState(null, null, this.state.oldPath);
+
         this.setState({
             open: false
         });
