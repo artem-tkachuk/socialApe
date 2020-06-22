@@ -31,7 +31,7 @@
     "redux-thunk": "^2.3.0",
     "typescript": "^3.7.5"
   },
-  "proxy": "https://us-central1-socialape-ea8b3.cloudfunctions.net/api",
+  "homepage": "https://socialape-ea8b3.web.app/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
