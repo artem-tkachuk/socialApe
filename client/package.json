@@ -18,7 +18,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/redux": "^3.6.0",
     "@types/redux-thunk": "^2.1.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "cors": "^2.8.5",
     "dayjs": "^1.8.28",
     "jwt-decode": "^2.2.0",
